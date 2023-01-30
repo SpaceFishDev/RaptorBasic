@@ -1,0 +1,15 @@
+D:\Projects\RaptorBasic\RaptorBasic\bin\Debug\net6.0\RaptorBasic.exe
+D:\Projects\RaptorBasic\RaptorBasic\bin\Debug\net6.0\RaptorBasic.deps.json
+D:\Projects\RaptorBasic\RaptorBasic\bin\Debug\net6.0\RaptorBasic.runtimeconfig.json
+D:\Projects\RaptorBasic\RaptorBasic\bin\Debug\net6.0\RaptorBasic.dll
+D:\Projects\RaptorBasic\RaptorBasic\bin\Debug\net6.0\RaptorBasic.pdb
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.csproj.AssemblyReference.cache
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.AssemblyInfoInputs.cache
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.AssemblyInfo.cs
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.csproj.CoreCompileInputs.cache
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.dll
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\refint\RaptorBasic.dll
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.pdb
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\RaptorBasic.genruntimeconfig.cache
+D:\Projects\RaptorBasic\RaptorBasic\obj\Debug\net6.0\ref\RaptorBasic.dll
