@@ -27,10 +27,11 @@ push eax
 mov eax,  [b +     0]
 mov [hello + 1],  eax
 pop eax
-push eax
-mov eax,  [c +     0]
-mov [hello + 2],  eax
-pop eax
+mov eax, [c]
+add hello, eax
+mov edx, dword c
+mov hello, edx
+sub hello, eax
 push hello
 call printf
 push 0

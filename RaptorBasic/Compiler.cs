@@ -330,9 +330,13 @@ namespace RaptorBasic
                                                 {
                                                     if (cmd.args[3].Value.ToString() == "=")
                                                     {
-                                                        string s = cmd.args[4].Value.ToString();
-
-
+                                                        string nm1 = cmd.args[4].Value.ToString();
+                                                        text += $"mov eax, [{nm}]\n";
+                                                        text += $"mov ebx, {cmd.name}";
+                                                        text += $"add ebx, eax\n";
+                                                        text += $"mov edx, dword {nm1}\n";
+                                                        text += $"mov {}, edx\n";
+                                                        text += $"sub {cmd.name}, eax\n";
                                                     }
 
                                                 }
