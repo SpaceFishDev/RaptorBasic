@@ -32,6 +32,77 @@ namespace RaptorBasic
             {
                 switch (cmd.name)
                 {
+                    #region math
+                    #region add
+                    case "add":
+                        {
+                            if (cmd.args[0].tokenType == TokenType.word)
+                            {
+                                string name = cmd.args[0].Value.ToString();
+                                foreach(var Var in Variables)
+                                {
+                                    if(Var.name == name)
+                                    {
+                                        if (cmd.args[1].tokenType == TokenType.number)
+                                        {
+                                            text += $"mov eax, dword {int.Parse(cmd.args[1].Value.ToString())}\n" +
+                                                $"add {Var.name}, dword eax\n";
+                                        }
+                                        else if (cmd.args[1].tokenType == TokenType.word)
+                                        {
+                                            foreach (var Var1 in Variables)
+                                            {
+                                                if (Var1.name == cmd.args[1].Value.ToString())
+                                                {
+                                                        text += $"mov eax, dword [{Var1.name}]\n" +
+                                                        $"mov edx, dword [{Var1.name}]\n" +
+                                                        $"add edx, eax\n" +
+                                                        $"mov [{Var.name}], dword edx\n"; 
+                                                }   
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+                        } break;
+                    #endregion
+                    #region sub
+                    case "sub":
+                        {
+                            if (cmd.args[0].tokenType == TokenType.word)
+                            {
+                                string name = cmd.args[0].Value.ToString();
+                                foreach (var Var in Variables)
+                                {
+                                    if (Var.name == name)
+                                    {
+                                        if (cmd.args[1].tokenType == TokenType.number)
+                                        {
+                                            text += $"mov eax, dword [{Var.name}]\n" +
+                                                    $"mov edx, dword {int.Parse(cmd.args[1].Value.ToString())}\n" +
+                                                    $"sub eax, edx\n" +
+                                                    $"mov [{Var.name}], dword eax\n";
+                                        }
+                                        else if (cmd.args[1].tokenType == TokenType.word)
+                                        {
+                                            foreach (var Var1 in Variables)
+                                            {
+                                                if (Var1.name == cmd.args[1].Value.ToString())
+                                                {
+                                                    text += $"mov eax, dword [{Var1.name}]\n" +
+                                                    $"mov edx, dword [{Var1.name}]\n" +
+                                                    $"sub edx, eax\n" +
+                                                    $"mov [{Var.name}], dword edx\n";
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    #endregion
+                    #endregion
                     #region if
 
                     case "if":
@@ -169,7 +240,7 @@ namespace RaptorBasic
                                         else if (cmd.args[2].tokenType == TokenType.number)
                                         {
                                             Variables.Add((name, TokenType.number));
-                                            data += $"{name}:\n\tdw {cmd.args[2].Value}\n";
+                                            data += $"{name}:\n\tdd {cmd.args[2].Value}\n";
                                         }
                                         else
                                         {
@@ -296,26 +367,53 @@ namespace RaptorBasic
                                                 {
                                                     if (cmd.args[2].Value.ToString() == "[")
                                                     {
-                                                        int index = int.Parse(cmd.args[1].Value.ToString());
-                                                        text += "push eax\n" +
-                                                           $"mov eax, [{nm} + {index}]\n" +
-                                                           $"mov [{Var.name}], eax\n";
-                                                    }
-                                                    if (_Var.type == TokenType.str)
-                                                    {
-                                                        text += "push eax\n" +
-                                                            $"mov eax, [{nm}]\n" +
+                                                        if (cmd.args[3].tokenType == TokenType.number)
+                                                        {
+                                                            int index = int.Parse(cmd.args[3].ToString());
+                                                            text += "push eax\n" +
+                                                            $"mov eax, [{nm} + {index}]\n" +
                                                             $"mov [{Var.name}], eax\n";
+                                                        }
+                                                        else if (cmd.args[3].tokenType == TokenType.word)
+                                                        {
+                                                            string nm1 = cmd.args[3].Value.ToString();
+                                                            text += "push eax\n" +
+                                                            $"mov ebx, [{nm1}]\n" +
+                                                            $"mov eax, {nm}[ebx]\n" +
+                                                            $"mov [{Var.name}], eax\n";
+                                                        }
                                                     }
                                                     else
                                                     {
-                                                        text += "push eax\n" +
-                                                            $"mov eax, [{nm}]\n" +
-                                                            $"mov [{Var.name}], eax\n";
+                                                        if (_Var.type == TokenType.str)
+                                                        {
+                                                            text += "push eax\n" +
+                                                                $"mov eax, [{nm}]\n" +
+                                                                $"mov [{Var.name}], eax\n";
+                                                        }
+                                                        else
+                                                        {
+                                                            text += "push eax\n" +
+                                                                $"mov eax, [{nm}]\n" +
+                                                                $"mov [{Var.name}], eax\n";
+                                                        }
                                                     }
                                                 }
                                             }
                                             //error;
+                                        }
+                                        else
+                                        {
+                                            if (cmd.args[1].tokenType == TokenType.str)
+                                            {
+                                                data += $"str_{prt}:\ndw \"{cmd.args[1].Value}\"\n";
+                                                text += $"mov eax,  dword str_{prt}\n";
+                                                text += $"mov {Var.name}, dword eax\n";
+                                            }
+                                            else
+                                            {
+                                                text += $"mov [{Var.name}], dword {cmd.args[1].Value}\n";
+                                            }
                                         }
 
                                     }
@@ -330,13 +428,33 @@ namespace RaptorBasic
                                                 {
                                                     if (cmd.args[3].Value.ToString() == "=")
                                                     {
-                                                        string nm1 = cmd.args[4].Value.ToString();
-                                                        text += $"mov eax, [{nm}]\n";
-                                                        text += $"mov ebx, {cmd.name}";
-                                                        text += $"add ebx, eax\n";
-                                                        text += $"mov edx, dword {nm1}\n";
-                                                        text += $"mov {}, edx\n";
-                                                        text += $"sub {cmd.name}, eax\n";
+                                                        if (cmd.args[5].Value.ToString() == "[")
+                                                        {
+                                                            if (cmd.args[3].tokenType == TokenType.number)
+                                                            {
+                                                                int index = int.Parse(cmd.args[3].ToString());
+                                                                text += "push eax\n" +
+                                                                $"mov eax, [{nm} + {index}]\n" +
+                                                                $"mov [{Var.name}], eax\n";
+                                                            }
+                                                            else if (cmd.args[3].tokenType == TokenType.word)
+                                                            {
+                                                                string nm1 = cmd.args[3].Value.ToString();
+                                                                text += "push eax\n" +
+                                                                $"mov ebx, [{nm1}]\n" +
+                                                                $"mov eax, {nm}[ebx]\n" +
+                                                                $"mov [{Var.name}], eax\n";
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            string nm1 = cmd.args[6].Value.ToString();
+                                                            text += "push eax\n" +
+                                                            $"mov     ebx,  dword [{nm}]\n" + // index
+                                                            $"mov     edx,  dword [{nm1}]\n" + // value 
+                                                            $"mov      [{Var.name} + ebx], dword edx \n" +
+                                                            "pop eax\n";
+                                                        }
                                                     }
 
                                                 }
@@ -357,7 +475,8 @@ namespace RaptorBasic
                                                         {
                                                             text += "push eax\n" +
                                                             $"mov eax,  [{nm} +     0]\n" +
-                                                            $"mov [{Var.name} + {index}],  eax\n" +
+                                                            $"mov ebx,  {index}\n" +
+                                                            $"mov {Var.name}[ebx],  eax\n" +
                                                             "pop eax\n";
                                                         }
                                                     }

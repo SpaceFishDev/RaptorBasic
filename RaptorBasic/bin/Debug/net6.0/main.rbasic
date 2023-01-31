@@ -1,8 +1,6 @@
-dec array hello 3; 
-let a = "A";
-let b = "B";
-let c = 0;
-hello[0] = a;
-hello[1] = b;
-hello[c] = c;
-print hello;
+let a = 32;
+let b = 32;
+
+sub a 12;
+
+print a;
